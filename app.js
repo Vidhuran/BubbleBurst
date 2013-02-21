@@ -42,7 +42,7 @@ $(function() {
 	// Assign the <video> element to a variable
     video = document.getElementById('sourcevid');
 
-	copycanvas = document.getElementById('sourcecopy');
+    copycanvas = document.getElementById('sourcecopy');
     copy = copycanvas.getContext('2d');
     
     var outputcanvas = document.getElementById('output');
@@ -99,6 +99,10 @@ function processFrame() {
             SOURCERECT = {x:0,y:0,width:video.videoWidth,height:video.videoHeight};
             copycanvas.width = video.videoWidth;
             copycanvas.height = video.videoHeight;
+            
+	    // Mirror effect on the image so that it is easy to play 
+    	    copy.translate(copycanvas.width, 0);
+            copy.scale(-1,1);	
             
             TILE_WIDTH = copycanvas.width / 16;
             TILE_HEIGHT = copycanvas.height / 16;
