@@ -61,7 +61,12 @@ $(function() {
     // Replace the source of the video element with the stream from the camera
 	if (navigator.getUserMedia) {
 		navigator.getUserMedia({video: true, audio: true}, function(localMediaStream) {
-			video.src = window.URL.createObjectURL(localMediaStream);
+			// To work on Mozilla browsers. Thanks to https://hacks.mozilla.org/2013/02/cross-browser-camera-capture-with-getusermediawebrtc/
+			if (video.mozSrcObject !== undefined) {
+            			video.mozSrcObject = stream;
+	        	} else {
+				video.src = window.URL.createObjectURL(localMediaStream);
+			}
 		}, onFailure);
 		
 	} else {
