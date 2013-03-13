@@ -67,6 +67,7 @@ $(function() {
 	        	} else {
 				if (window.URL) {  // Opera interoperability
 					video.src = window.URL.createObjectURL(localMediaStream);
+					video.play(); // Autoplay doesn't work on Firefox Nightly
 				
 				}
 				else {
