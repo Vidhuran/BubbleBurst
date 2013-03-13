@@ -81,8 +81,34 @@ $(function() {
 	}
 	
 	setInterval(processFrame, 33);
+	setInterval(detectFace, 500);
+ 
 	 
 });
+
+function detectFace() {
+
+    var elapsed_time = (new Date()).getTime();
+	
+    // use the face detection library to find the face
+    var face = ccv.detect_objects({ "canvas" : (ccv.pre(copycanvas)),
+                                    "cascade" : cascade,
+                                    "interval" : 5,
+                                    "min_neighbors" : 1 });
+
+    console.log("Process time : " + ((new Date()).getTime() - elapsed_time).toString() + "ms");
+    console.log(face);	
+
+    // Draw a rectangle around the face 
+    var offsetX = (PAINTWIDTH-SOURCERECT.width)/2;
+    var offsetY = (PAINTWIDTH-SOURCERECT.height)/2;
+
+    var topX = offsetX + (face[0].x - (face[0].height/2));
+    var topY = offsetY + (face[0].y - (face[0].height/2));
+    var bottomX = offsetX + (face[0].x + (face[0].height/2));	
+    var bottomY = offsetY + (face[0].y + (face[0].height/2));	
+    draw.strokeRect(topX, topY, bottomX, bottomY);	 
+}
 
 function createTiles() {
     var offsetX = (TILE_CENTER_WIDTH+(PAINTWIDTH-SOURCERECT.width)/2 >> 0);
