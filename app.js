@@ -62,15 +62,21 @@ $(function() {
 	if (navigator.getUserMedia) {
 		navigator.getUserMedia({video: true, audio: true}, function(localMediaStream) {
 			// To work on Mozilla browsers. Thanks to https://hacks.mozilla.org/2013/02/cross-browser-camera-capture-with-getusermediawebrtc/
-			if (video.mozSrcObject !== undefined) {
+			if (video.mozSrcObject) {
             			video.mozSrcObject = localMediaStream;
 	        	} else {
-				video.src = window.URL.createObjectURL(localMediaStream);
+				if (window.URL) {  // Opera interoperability
+					video.src = window.URL.createObjectURL(localMediaStream);
+				
+				}
+				else {
+					video.src = localMediaStream;
+				}
 			}
 		}, onFailure);
 		
 	} else {
-		video.src = 'video2.ogg'; // fallback.
+		console.log("Your browser doesn't support gUM"); // fallback.
 	}
 	
 	setInterval(processFrame, 33);
